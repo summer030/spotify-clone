@@ -1,6 +1,7 @@
-import { User } from "@supabase/auth-helpers-nextjs";
 import { createContext, useContext, useEffect, useState } from "react";
+
 import {
+  User,
   useSessionContext,
   useUser as useSupaUser,
 } from "@supabase/auth-helpers-react";
@@ -86,4 +87,5 @@ export const useUser = () => {
   if (context === undefined) {
     throw new Error("useUseer must be used with a MyUserContextProvider");
   }
+  return context;
 };
