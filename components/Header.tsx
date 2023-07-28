@@ -5,14 +5,15 @@ import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
+import { FaUserAlt } from "react-icons/fa";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { toast } from "react-hot-toast";
 
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
+import usePlayer from "@/hooks/usePlayer";
 
 import Button from "./Button";
-import { FaUserAlt } from "react-icons/fa";
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
+  const player = usePlayer();
   const authModal = useAuthModal();
   const router = useRouter();
 
@@ -29,6 +31,8 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
   const handleLogout = async () => {
     const { error } = await supabaseClient.auth.signOut();
     // TODO: Reset any playing songs
+    player.reset();
+
     router.refresh();
     if (error) {
       toast.error(error.message);
